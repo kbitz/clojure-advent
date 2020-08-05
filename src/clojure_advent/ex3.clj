@@ -12,14 +12,15 @@
 (def wire1 (map vectorize (str/split (input 0) #",")))
 (def wire2 (map vectorize (str/split (input 1) #",")))
 
+; gets absolute val of x
 (defn abs [x] (max x (-' x)))
 
 (defn new-coords [dir dist x y]
   (cond
-    (= dir "L") (vec (list (- x dist) y))
-    (= dir "R") (vec (list (+ x dist) y))
-    (= dir "U") (vec (list x (+ y dist)))
-    (= dir "D") (vec (list x (- y dist)))))
+    (= dir "L") [(- x dist) y]
+    (= dir "R") [(+ x dist) y]
+    (= dir "U") [x (+ y dist)]
+    (= dir "D") [x (- y dist)]))
 
 (defn next-coord [c1 c2]
   (let [x0 (c1 0) y0 (c1 1) x1 (c2 0) y1 (c2 1)]
