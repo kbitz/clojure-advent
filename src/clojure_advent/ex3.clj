@@ -7,7 +7,7 @@
 
 (defn vectorize [inst]
   (let [inst (vec (map str (vec inst)))]
-    (vec (list (inst 0) (Integer/parseInt (str/join (subvec inst 1)))))))
+    [(inst 0) (Integer/parseInt (str/join (subvec inst 1)))]))
 
 (def wire1 (map vectorize (str/split (input 0) #",")))
 (def wire2 (map vectorize (str/split (input 1) #",")))
@@ -55,6 +55,7 @@
   (let [c (cross(wiremap wire1) (wiremap wire2))]
     (apply min (into (empty c) (for [[k v] c] (+ (abs k) (abs v)))))))
 
+;; "Elapsed time: 4500.751137 msecs"
 (defn part-2 []
   (let [wm1 (wiremap wire1) wm2 (wiremap wire2) cross (cross wm1 wm2)]
     (loop [remain cross result (empty cross)]
@@ -65,3 +66,14 @@
          (conj result (+
                        (reduce + (for [p wm1 :while (false? (= (first remain) p))] 1))
                        (reduce + (for [p wm2 :while (false? (= (first remain) p))] 1)) 2)))))))
+
+;; Part 2 - Second Attempt
+;; "Elapsed time: 3874.786926 msecs"
+(defn count-steps [c wm]
+  (+ 1 (reduce + (for [p wm :while (false? (= c p))] 1))))
+
+(defn part-2-2 []
+  (let [wm1 (wiremap wire1) wm2 (wiremap wire2) cross (cross wm1 wm2)]
+    (apply min (map + 
+                    (map #(count-steps % wm1) cross)
+                    (map #(count-steps % wm2) cross)))))
