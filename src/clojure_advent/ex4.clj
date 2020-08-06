@@ -1,4 +1,4 @@
-(ns clojure-advent.ex3
+(ns clojure-advent.ex4
   (:gen-class))
 
 (def input (range 128392 (inc 643281)))
